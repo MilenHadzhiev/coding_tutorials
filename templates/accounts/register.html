@@ -1,0 +1,29 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% block site_title %}
+    Register
+{% endblock %}
+{% block site_content %}
+    <div class="container-fluid" style="background-image: none;">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <form method="post" action="{% url 'register user' %}"
+                      style="border: 1px solid grey; margin: 10% 0%; padding: 10% 5%">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        {% bootstrap_field field %}
+                    {% endfor %}
+                        <button class="btn" type="submit">Register</button>
+                    <div style="margin-top: 10px">
+                        <span>Already have an account?
+                            <a href="{% url 'login' %}" style="color:cornflowerblue; margin-left: 5px;">Login here</a>
+                        </span>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+    </div>
+{% endblock %}

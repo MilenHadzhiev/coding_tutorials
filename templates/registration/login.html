@@ -1,0 +1,26 @@
+{% extends 'common/base.html' %}
+{% load bootstrap4 %}
+{% block site_content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <form class="w-50 m-auto" method="post"
+                      style="border: 1px solid grey; margin: 10% 0%; padding: 10% 5%">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        {% bootstrap_field field %}
+                    {% endfor %}
+
+                    {% if form.non_field_errors %}
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
