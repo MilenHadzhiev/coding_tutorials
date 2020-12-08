@@ -19,12 +19,17 @@
 
     {% block site_custom_styles %}
     {% endblock site_custom_styles %}
+
 </head>
 <body>
 {% include 'partials/nav.html' %}
-{% block site_content %}
 
+{% block site_content %}
 {% endblock site_content %}
+
 {% include 'partials/footer.html' %}
+
+{% block site_scripts %}
+{% endblock %}
 </body>
 </html>
