@@ -12,7 +12,7 @@ class UserProfile(models.Model):
     )
     github = models.URLField(blank=True, default='')
     address = models.TextField(blank=True, default='')
-    date_of_birth = models.DateField(blank=True, default=datetime.now)
+    # date_of_birth = models.DateField(blank=True, default=datetime.now)
     personal_website = models.URLField(blank=True, default='')
     about = models.TextField(blank=True, default='')
     user = models.OneToOneField(

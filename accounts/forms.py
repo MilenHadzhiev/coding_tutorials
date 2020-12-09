@@ -22,7 +22,7 @@ class UserProfileEditForm(forms.ModelForm):
         self.fields['profile_picture'].required = False
         self.fields['github'].required = False
         self.fields['address'].required = False
-        self.fields['date_of_birth'].required = False
+        # self.fields['date_of_birth'].required = False
         self.fields['personal_website'].required = False
         self.fields['about'].required = False
 

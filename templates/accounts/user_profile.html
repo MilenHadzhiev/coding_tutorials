@@ -50,12 +50,6 @@
                     {% else %}
                         -
                     {% endif %} <br>
-                    Date of birth:
-                    {% if user.userprofile.date_of_birth %}
-                        {{ user.userprofile.date_of_birth }}
-                    {% else %}
-                        -
-                    {% endif %}
                 </p>
                 {% if user.userprofile.about %}
                     <p>{{ user.userprofile.about }}</p>
