@@ -34,6 +34,8 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'accounts',
     'bootstrap4',
+    'tutorials',
+    'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -136,3 +138,5 @@ STATICFILES_DIRS = (
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = join(BASE_DIR, 'media')
+
+DATE_INPUT_FORMATS = ['%d-%m-%Y']
