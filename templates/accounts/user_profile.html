@@ -1,0 +1,70 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% block site_custom_styles %}
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/user_profile_page.css' %}">
+{% endblock %}
+
+{% block site_title %}
+    {{ user.username }}
+{% endblock %}
+
+{% block site_content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 img">
+                <img src="
+                    {% if user.userprofile.profile_picture %}
+                        {{ user.userprofile.profile_picture.url }}
+                    {% else %}
+                        {% static 'images/user.jpg' %}
+                    {% endif %}
+"
+                     alt="Profile picture" class="img-rounded">
+            </div>
+            <div class="col-md-6 details">
+                <blockquote>
+                    <h5>{% if user.first_name %}
+                        {{ user.first_name }} {{ user.last_name }}
+                    {% else %}
+                        {{ user.username }}
+                    {% endif %}
+                        {% if user.userprofile.address %}
+                            </h5>
+                            <small><cite title="Source Title">{{ user.userprofile.address }}<i
+                                    class="icon-map-marker"></i></cite></small>
+
+                        {% endif %}
+                </blockquote>
+                <p>
+                    Email:
+                    {% if user.email %}
+                        {{ user.email }}
+                    {% else %}
+                        -
+                    {% endif %} <br>
+                    Personal website:
+                    {% if user.userprofile.personal_website %}
+                        {{ user.userprofile.personal_website }}
+                    {% else %}
+                        -
+                    {% endif %} <br>
+                    Date of birth:
+                    {% if user.userprofile.date_of_birth %}
+                        {{ user.userprofile.date_of_birth }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </p>
+                {% if user.userprofile.about %}
+                    <p>{{ user.userprofile.about }}</p>
+                {% endif %}
+                {% if has_edit_link %}
+                    <button type="button" class="btn btn-light"><a href="{% url 'edit profile' %}">Edit info</a>
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

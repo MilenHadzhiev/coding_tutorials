@@ -14,3 +14,11 @@
     font-size: 15px;
     font-weight: bold;
 }
+
+button a:hover {
+    text-decoration: none;
+}
+
+textarea {
+    resize: none;
+}
