@@ -1,6 +1,7 @@
 {% extends 'common/base.html' %}
 {% load static %}
 {% load bootstrap4 %}
+{#{% load crispy_forms_tags %}#}
 {% block site_custom_styles %}
     <style>
         textarea {
@@ -19,8 +20,10 @@
                 <form method="post" enctype="multipart/form-data"
                       action="{% url 'edit profile' %}" style="border: 1px solid grey; margin: 10% 0%; padding: 10% 5%">
                     {% csrf_token %}
+                    {% for field in form %}
+                        {% bootstrap_field field %}
+                    {% endfor %}
 
-                    {{ form }}
                     <button class="btn btn-dark" type="submit">Submit</button>
                 </form>
             </div>

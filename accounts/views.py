@@ -1,8 +1,9 @@
 from django.contrib.auth import logout, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
-from accounts.forms import RegisterForm
+from accounts.forms import RegisterForm, UserProfileEditForm
 from accounts.models import UserProfile
 
 
@@ -32,14 +33,42 @@ def profile_user(request, pk=None):
     user = request.user if pk is None else User.objects.get(pk=pk)
     context = {
         'user': user,
+        'has_edit_link': pk is None,
     }
-    return render(request, 'user_profile.html', context)
+    return render(request, 'accounts/user_profile.html', context)
 
 
+@login_required
 def profile_user_edit(request):
-    pass
+    user = request.user
+    if request.method == 'GET':
+        initial = {
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'email': user.email,
+            'profile_picture': user.userprofile.profile_picture,
+            'github': user.userprofile.github,
+            'address': user.userprofile.address,
+            'personal_website': user.userprofile.personal_website,
+            'about': user.userprofile.about,
+        }
+        context = {
+            'form': UserProfileEditForm(initial=initial),
+            'user': user,
+        }
+        return render(request, 'accounts/user_profile_edit.html', context)
+    else:
+        form = UserProfileEditForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('current user profile')
+        context = {
+            'form': form,
+        }
+        return render(request=request, template_name='accounts/user_profile_edit.html', context=context)
 
 
+@login_required
 def logout_user(request):
     logout(request)
     return redirect('homepage')
