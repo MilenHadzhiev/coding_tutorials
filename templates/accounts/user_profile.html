@@ -1,8 +1,6 @@
 {% extends 'common/base.html' %}
 {% load static %}
 {% block site_custom_styles %}
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/user_profile_page.css' %}">
 {% endblock %}
 
@@ -60,4 +58,32 @@
             </div>
         </div>
     </div>
+    {% if user.tutorial_set %}
+        <div class="row">
+            {% for tutorial in tutorials %}
+                <div class="col-lg-4">
+                    <div class="card" style="width: 18rem;">
+                        {#                            <div class="embed-responsive embed-responsive-16by9">#}
+                        {#                                <iframe class="embed-responsive-item"#}
+                        {#                                        src="{{ tutorial.video_url }}"#}
+                        {#                                        allowfullscreen></iframe>#}
+                        {#                            </div>#}
+                        <button class="btn">{{ tutorial.tutorial_name }}
+                        </button>
+                        <div class="card-body">
+                            <h5 class="text-center">Added By:
+                                <a href="{% url 'user profile' tutorial.user.id %}">{{ tutorial.user.username }}</a>
+                            </h5>
+                            <div class="text-center">
+                                <a href="{% url 'view tutorial page' tutorial.id %}"
+                                   class="btn btn-primary stretched-link">
+                                    See details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 {% endblock %}

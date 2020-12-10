@@ -1,4 +1,44 @@
 {% extends 'common/base.html' %}
 {% block site_content %}
-    All Tutorials
+    {% if tutorials %}
+
+        {% if is_user_tutorials_page %}
+            <h1 class="text-center">{{ user.username }}'s Tutorials</h1>
+        {% else %}
+            <h1 class="text-center">All Tutorials</h1>
+        {% endif %}
+
+        <div class="row">
+            {% for tutorial in tutorials %}
+                <div class="col-lg-4">
+                    <div class="card" style="width: 18rem;">
+                        {#                            <div class="embed-responsive embed-responsive-16by9">#}
+                        {#                                <iframe class="embed-responsive-item"#}
+                        {#                                        src="{{ tutorial.video_url }}"#}
+                        {#                                        allowfullscreen></iframe>#}
+                        {#                            </div>#}
+                        <button class="btn">{{ tutorial.tutorial_name }}
+                        </button>
+                        <div class="card-body">
+                            <h5 class="text-center">Added By: {{ tutorial.user.username }}
+                            </h5>
+                            <div class="text-center">
+                                <a href="{% url 'view tutorial page' tutorial.id %}"
+                                   class="btn btn-primary stretched-link">
+                                    See details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        {% if user.is_authenticated %}
+            You have no tutorials
+            <a href="{% url 'create tutorial' %}">Create a Tutorial</a>
+        {% else %}
+            There are no tutorials
+        {% endif %}
+    {% endif %}
 {% endblock %}

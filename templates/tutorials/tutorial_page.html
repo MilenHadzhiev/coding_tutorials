@@ -1,4 +1,39 @@
 {% extends 'common/base.html' %}
+{% block site_custom_styles %}
+    <style>
+        .video {
+            color: grey;
+        }
+
+        .video:hover {
+            text-decoration: none;
+            color: dimgrey;
+        }
+    </style>
+{% endblock %}
 {% block site_content %}
-    Tutorial
+    <div class="container">
+        <div class="text-center" style="margin-top: 30px;">
+            <h1>{{ tutorial.tutorial_name }}</h1>
+            <h5>Added By: <a href="{% url 'user profile' tutorial.user.id %}">{{ tutorial.user.username }}</a></h5>
+            {% if tutorial.video_url %}
+                <button class="btn btn-block"><a href="{{ tutorial.video_url }}"
+                                                 class="video">See video explanation</a></button>
+            {% endif %}
+            <p class="mt2" style="text-align: justify;">{{ tutorial.description }}</p>
+        </div>
+        {% if can_change %}
+            <div class="text-center">
+                <a href="{% url 'edit tutorial' tutorial.id %}" class="btn btn-info">Edit Tutorial</a>
+                <a href="{% url 'delete tutorial' tutorial.id %}" class="btn btn-danger">Delete Tutorial</a>
+            </div>
+            <div class="text-center">
+            </div>
+        {% endif %}
+        {% if user.is_authenticated %}
+            <div class="text-center" style="margin-top: 50px">
+                <a href="" class="btn btn-dark">Add to a Note</a>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}
