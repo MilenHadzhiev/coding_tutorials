@@ -8,31 +8,8 @@
             <h1 class="text-center">All Tutorials</h1>
         {% endif %}
 
-        <div class="row">
-            {% for tutorial in tutorials %}
-                <div class="col-lg-4">
-                    <div class="card" style="width: 18rem;">
-                        {#      TO DO                      <div class="embed-responsive embed-responsive-16by9">#}
-                        {#                                <iframe class="embed-responsive-item"#}
-                        {#                                        src="{{ tutorial.video_url }}"#}
-                        {#                                        allowfullscreen></iframe>#}
-                        {#                            </div>#}
-                        <button class="btn">{{ tutorial.tutorial_name }}
-                        </button>
-                        <div class="card-body">
-                            <h5 class="text-center">Added By: {{ tutorial.user.username }}
-                            </h5>
-                            <div class="text-center">
-                                <a href="{% url 'view tutorial page' tutorial.id %}"
-                                   class="btn btn-primary stretched-link">
-                                    See details
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+        {% include 'partials/display_tutorials.html' %}
+
     {% else %}
         {% if user.is_authenticated %}
             <div class="mt-5 text-center">

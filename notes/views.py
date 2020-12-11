@@ -1,27 +1,44 @@
-from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
 from notes.forms import NoteCreateForm
 from notes.models import Note
+from tutorials.models import Tutorial
 
 
-def note_create(request):
-    if request.method == 'GET':
-        context = {
-            'form': NoteCreateForm,
-        }
-        return render(request, 'notes/note_create.html', context)
+def note_create_post_persist(request):
+    form = NoteCreateForm(request.POST)
+    if form.is_valid():
+        note = form.save(commit=False)
+        note.user = request.user
+        note.save()
+        return note_page(request, pk=note.id)
+    context = {
+        'form': form,
+    }
+    return render(request, 'notes/note_create.html', context)
+
+
+def note_create(request, pk=None):
+    if pk is None:
+        if request.method == 'GET':
+            context = {
+                'form': NoteCreateForm,
+            }
+            return render(request, 'notes/note_create.html', context)
+        else:
+            return note_create_post_persist(request)
     else:
-        form = NoteCreateForm(request.POST)
-        if form.is_valid():
-            note = form.save(commit=False)
-            note.user = request.user
-            note.save()
-            return note_page(request, pk=note.id)
-        context = {
-            'form': form,
+        tutorial = Tutorial.objects.get(pk=pk)
+        initial = {
+            'title': tutorial.tutorial_name,
         }
-        return render(request, 'notes/note_create.html', context)
+        if request.method == 'GET':
+            context = {
+                'form': NoteCreateForm(initial=initial),
+            }
+            return render(request, 'notes/note_create.html', context)
+        else:
+            return note_create_post_persist(request)
 
 
 def all_user_notes(request):

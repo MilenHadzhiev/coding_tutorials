@@ -30,7 +30,7 @@
         {% endif %}
         {% if user.is_authenticated %}
             <div class="text-center" style="margin-top: 50px">
-                <a href="{% url 'create note' %}" class="btn btn-dark">Add to a Note</a>
+                <a href="{% url 'create note for tutorial' tutorial.id %}" class="btn btn-dark">Add to a Note</a>
             </div>
         {% endif %}
     </div>
