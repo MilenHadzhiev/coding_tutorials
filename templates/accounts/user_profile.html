@@ -5,16 +5,19 @@
 {% endblock %}
 
 {% block site_title %}
-    {{ user.username }}
+    {{ current_user.username }}
 {% endblock %}
 
 {% block site_content %}
+    {% if has_edit_link %}
+        <h1 class="text-center mt-4 mb-0">My Profile</h1>
+    {% endif %}
     <div class="container">
         <div class="row">
             <div class="col-md-6 img">
                 <img src="
-                    {% if user.userprofile.profile_picture %}
-                        {{ user.userprofile.profile_picture.url }}
+                    {% if current_user.userprofile.profile_picture %}
+                        {{ current_user.userprofile.profile_picture.url }}
                     {% else %}
                         {% static 'images/user.jpg' %}
                     {% endif %}"
@@ -22,34 +25,34 @@
             </div>
             <div class="col-md-6 details">
                 <blockquote>
-                    <h5>{% if user.first_name %}
-                        {{ user.first_name }} {{ user.last_name }}
+                    <h5>{% if current_user.first_name %}
+                        {{ current_user.first_name }} {{ current_user.last_name }}
                     {% else %}
-                        {{ user.username }}
+                        {{ current_user.username }}
                     {% endif %}
-                        {% if user.userprofile.address %}
+                        {% if current_user.userprofile.address %}
                             </h5>
-                            <small><cite title="Source Title">{{ user.userprofile.address }}<i
+                            <small><cite title="Source Title">{{ current_user.userprofile.address }}<i
                                     class="icon-map-marker"></i></cite></small>
 
                         {% endif %}
                 </blockquote>
                 <p>
                     Email:
-                    {% if user.email %}
-                        {{ user.email }}
+                    {% if current_user.email %}
+                        {{ current_user.email }}
                     {% else %}
                         -
                     {% endif %} <br>
                     Personal website:
-                    {% if user.userprofile.personal_website %}
-                        {{ user.userprofile.personal_website }}
+                    {% if current_user.userprofile.personal_website %}
+                        {{ current_user.userprofile.personal_website }}
                     {% else %}
                         -
                     {% endif %} <br>
                 </p>
-                {% if user.userprofile.about %}
-                    <p>{{ user.userprofile.about }}</p>
+                {% if current_user.userprofile.about %}
+                    <p>{{ current_user.userprofile.about }}</p>
                 {% endif %}
                 {% if has_edit_link %}
                     <button type="button" class="btn btn-light"><a href="{% url 'edit profile' %}">Edit info</a>
@@ -79,10 +82,10 @@
     {% else %}
         <div class="container">
             {% if tutorials %}
-                <h3 class="mb-4 text-center">{{ user.username }}'s Tutorials</h3>
+                <h3 class="mb-4 text-center">{{ current_user.username }}'s Tutorials</h3>
                 {% include 'partials/display_tutorials.html' %}
             {% else %}
-                <h3 class="mb-4 text-center">{{ user.username }} has no tutorials</h3>
+                <h3 class="mb-4 text-center">{{ current_user.username }} has no tutorials</h3>
             {% endif %}
         </div>
     {% endif %}

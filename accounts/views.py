@@ -34,7 +34,7 @@ def profile_user(request, pk=None):
     tutorials = user.tutorial_set.all()
     notes = user.note_set.all()
     context = {
-        'user': user,
+        'current_user': user,
         'tutorials': tutorials,
         'has_edit_link': pk is None,
         'notes': notes,
