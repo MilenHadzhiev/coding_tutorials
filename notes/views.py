@@ -17,7 +17,7 @@ def note_create(request):
             note = form.save(commit=False)
             note.user = request.user
             note.save()
-            return all_user_notes(request)
+            return note_page(request, pk=note.id)
         context = {
             'form': form,
         }

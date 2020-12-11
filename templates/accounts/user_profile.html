@@ -58,9 +58,32 @@
             </div>
         </div>
     </div>
-    <div>
-        <div>
-            {% include 'partials/display_tutorials.html' %}
+
+
+    {% if has_edit_link %}
+        <div class="container" style="width: 50%; padding: 0; float: left; border-right: 4px solid #ded4da;">
+            {% if tutorials %}
+                <h3 class="text-center">My Tutorials</h3>
+                {% include 'partials/display_tutorials.html' %}
+            {% else %}
+                <div class="mt-5 text-center">
+                    <h1>You have no tutorials</h1>
+                    <a href="{% url 'create tutorial' %}" class="btn btn-success">Create a Tutorial</a>
+                </div>
+            {% endif %}
         </div>
-    </div>
+        <div class="container" style="width: 50%; padding: 0; float: right">
+            <h3 class="text-center">My Notes</h3>
+            {% include 'partials/display_notes.html' %}
+        </div>
+    {% else %}
+        <div class="container">
+            {% if tutorials %}
+                <h3 class="mb-4 text-center">{{ user.username }}'s Tutorials</h3>
+                {% include 'partials/display_tutorials.html' %}
+            {% else %}
+                <h3 class="mb-4 text-center">{{ user.username }} has no tutorials</h3>
+            {% endif %}
+        </div>
+    {% endif %}
 {% endblock %}
