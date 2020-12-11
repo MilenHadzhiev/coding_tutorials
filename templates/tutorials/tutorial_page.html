@@ -27,12 +27,10 @@
                 <a href="{% url 'edit tutorial' tutorial.id %}" class="btn btn-info">Edit Tutorial</a>
                 <a href="{% url 'delete tutorial' tutorial.id %}" class="btn btn-danger">Delete Tutorial</a>
             </div>
-            <div class="text-center">
-            </div>
         {% endif %}
         {% if user.is_authenticated %}
             <div class="text-center" style="margin-top: 50px">
-                <a href="" class="btn btn-dark">Add to a Note</a>
+                <a href="{% url 'create note' %}" class="btn btn-dark">Add to a Note</a>
             </div>
         {% endif %}
     </div>

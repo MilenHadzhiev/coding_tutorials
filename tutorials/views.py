@@ -39,8 +39,8 @@ def tutorials_all(request):
 
 def tutorials_user(request, pk=None):
     user = request.user if pk is None else User.objects.get(pk=pk)
-    tutorials_count = user.tutorial_set.all().count()
     tutorials = user.tutorial_set.all()
+    tutorials_count = tutorials.count()
     context = {
         'user': user,
         'tutorials': tutorials,

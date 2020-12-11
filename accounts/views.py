@@ -32,10 +32,12 @@ def register_user(request):
 def profile_user(request, pk=None):
     user = request.user if pk is None else User.objects.get(pk=pk)
     tutorials = user.tutorial_set.all()
+    notes = user.note_set.all()
     context = {
         'user': user,
         'tutorials': tutorials,
         'has_edit_link': pk is None,
+        'notes': notes,
     }
     return render(request, 'accounts/user_profile.html', context)
 

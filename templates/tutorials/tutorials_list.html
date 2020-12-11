@@ -12,7 +12,7 @@
             {% for tutorial in tutorials %}
                 <div class="col-lg-4">
                     <div class="card" style="width: 18rem;">
-                        {#                            <div class="embed-responsive embed-responsive-16by9">#}
+                        {#      TO DO                      <div class="embed-responsive embed-responsive-16by9">#}
                         {#                                <iframe class="embed-responsive-item"#}
                         {#                                        src="{{ tutorial.video_url }}"#}
                         {#                                        allowfullscreen></iframe>#}
@@ -35,8 +35,10 @@
         </div>
     {% else %}
         {% if user.is_authenticated %}
-            You have no tutorials
-            <a href="{% url 'create tutorial' %}">Create a Tutorial</a>
+            <div class="mt-5 text-center">
+                <h1>You have no tutorials</h1>
+                <a href="{% url 'create tutorial' %}" class="btn btn-success">Create a Tutorial</a>
+            </div>
         {% else %}
             There are no tutorials
         {% endif %}
