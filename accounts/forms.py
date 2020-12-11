@@ -3,7 +3,6 @@ from django.contrib.auth.forms import UserCreationForm
 
 from accounts.models import UserProfile
 from core.BootstrapFormMixin import BootstrapFormMixin
-from core.TextAreaAutoGrowMixin import TextAreaAutoGrowMixin
 
 
 class RegisterForm(UserCreationForm, BootstrapFormMixin):
