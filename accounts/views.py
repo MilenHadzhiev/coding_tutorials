@@ -64,7 +64,14 @@ def profile_user_edit(request):
     else:
         form = UserProfileEditForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            user.userprofile.profile_picture = form.cleaned_data['profile_picture']
+            user.userprofile.github = form.cleaned_data['github']
+            user.userprofile.address = form.cleaned_data['address']
+            user.userprofile.personal_website = form.cleaned_data['personal_website']
+            user.userprofile.about = form.cleaned_data['about']
+            user.save()
+            user.userprofile.save()
             return redirect('current user profile')
         context = {
             'form': form,
