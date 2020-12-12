@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 
 def homepage(request):
-    return render(request, 'index.html')
+    if request.user.is_authenticated:
+        return redirect('current user profile')
+    else:
+        return render(request, 'index.html')

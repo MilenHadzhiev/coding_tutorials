@@ -1,7 +1,42 @@
 {% extends 'common/base.html' %}
+{% load static %}
+{% block site_custom_styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/homepage.css' %}" xmlns="http://www.w3.org/1999/html">
+{% endblock %}
 {% block site_title %}
     Coding Tutorials
 {% endblock %}
 {% block site_content %}
-    Welcome
+    <h1 class="text-center" style="margin-top: 30px;font-size: 60px;font-weight: bolder">Welcome to Coding Tutorials!</h1>
+    <div class="container float-left" style="width: 50%">
+        <h3 class="title">Why should I <a href="{% url 'register user' %}" class="link">join</a>?</h3>
+        <h4 class="title">From the people for the people</h4>
+        <h5 class="title">Learn on your own pace</h5>
+        <p>Add tutorials, which can help other users, <br>
+            or make use of other people's tutorials. <br>
+            <br>
+            Create Notes with detailed description <br>
+            or simply add a tutorial to a note <br>
+            to remind yourself to watch it.
+        </p>
+    </div>
+
+    <div class="container float-right" style="width: 50%; text-align: right">
+        <h3 class="title">About the site</h3>
+        <p>This website was created with Django 3.1.4 and Python 3.7 <br>
+            by Milen Hadzhiev <br>
+            <br>
+            It's a project for the final exam of the course <br>
+            <a href="https://softuni.bg/trainings/3180/python-web-framework-november-2020/internal"
+               class="link"> Python Web Framework</a> in the
+            <a href="https://softuni.bg/" class="link">Software University</a> <br>
+        </p>
+        <h3 class="title">About the creator</h3>
+        <p> <a href="https://github.com/MilenHadzhiev" class="link">Github</a> <br>
+            <a href="https://stackoverflow.com/users/11210430/%d0%9c%d0%b8%d0%bb%d0%b5%d0%bd-%d0%a5%d0%b0%d0%b4%d0%b6%d0%b8%d0%b5%d0%b2"
+               class="link">StackOverflow</a> <br>
+            <a href="https://softuni.bg/users/profile/show/milenhadzhiev" class="link">SoftUni</a> <br>
+            <sub>You have to be logged in SoftUni</sub>*
+        </p>
+    </div>
 {% endblock %}

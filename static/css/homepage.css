@@ -1,0 +1,20 @@
+body {
+    color: #8c9396;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.link {
+    text-decoration: none;
+    color: #020304;
+    /*color: #292b2c;*/
+
+}
+
+.link:hover {
+    text-decoration: none;
+    /*color: #292b2c;*/
+    color: #8c9396;
+}

@@ -1,14 +1,14 @@
 <div class="row">
     {% for tutorial in tutorials %}
-        <div class="col-lg-4" style="margin-top: 15px">
-            <div class="card" style="width: 18rem;">
+        <div class="col-lg-4" style="margin-top: 15px;">
+            <div class="card" style="width: 18rem;background: rgba(204, 204, 204, 0);border: none">
                 {#                            <div class="embed-responsive embed-responsive-16by9">#}
                 {#                                <iframe class="embed-responsive-item"#}
                 {#                                        src="{{ tutorial.video_url }}"#}
                 {#                                        allowfullscreen></iframe>#}
                 {#                            </div>#}
-                <button class="btn">{{ tutorial.tutorial_name }}
-                </button>
+                <h4 class="text-center">{{ tutorial.tutorial_name }}
+                </h4>
                 <div class="card-body">
                     <h5 class="text-center">Added By:
                         <a href="{% url 'user profile' tutorial.user.id %}">{{ tutorial.user.username }}</a>
