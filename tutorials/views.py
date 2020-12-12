@@ -36,7 +36,7 @@ def tutorials_all(request):
     }
     return render(request, 'tutorials/tutorials_list.html', context)
 
-
+@login_required
 def tutorials_user(request, pk=None):
     user = request.user if pk is None else User.objects.get(pk=pk)
     tutorials = user.tutorial_set.all()

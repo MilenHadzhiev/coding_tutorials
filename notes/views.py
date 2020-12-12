@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 from notes.forms import NoteCreateForm
@@ -5,6 +6,7 @@ from notes.models import Note
 from tutorials.models import Tutorial
 
 
+@login_required
 def note_create_post_persist(request):
     form = NoteCreateForm(request.POST)
     if form.is_valid():
@@ -18,6 +20,7 @@ def note_create_post_persist(request):
     return render(request, 'notes/note_create.html', context)
 
 
+@login_required
 def note_create(request, pk=None):
     if pk is None:
         if request.method == 'GET':
@@ -41,6 +44,7 @@ def note_create(request, pk=None):
             return note_create_post_persist(request)
 
 
+@login_required
 def all_user_notes(request):
     user = request.user
     notes = user.note_set.all()
@@ -53,6 +57,7 @@ def all_user_notes(request):
     return render(request, 'notes/notes_list.html', context)
 
 
+@login_required
 def note_page(request, pk):
     note = Note.objects.get(pk=pk)
     context = {
@@ -61,6 +66,7 @@ def note_page(request, pk):
     return render(request, 'notes/note_page.html', context)
 
 
+@login_required
 def note_edit(request, pk):
     note = Note.objects.get(pk=pk)
     if request.method == 'GET':
@@ -85,6 +91,7 @@ def note_edit(request, pk):
         return render(request, 'notes/note_edit.html', context)
 
 
+@login_required
 def note_delete(request, pk):
     note = Note.objects.get(pk=pk)
     if request.method == 'GET':
