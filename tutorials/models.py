@@ -9,9 +9,6 @@ class Tutorial(models.Model):
     description = models.TextField()
     video_url = models.URLField(blank=True, default='')
 
-    # tutorial_file = models.FileField(
-    #     upload_to='tutorial_videos/',
-    # )
     links_to_documentation = models.URLField()
     user = models.ForeignKey(
         User,
