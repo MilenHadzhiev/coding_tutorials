@@ -16,7 +16,7 @@
     {% else %}
         {% if user.is_authenticated %}
             <div class="mt-5 text-center">
-                <h1>You have no tutorials</h1>
+                <h1>There are no tutorials</h1>
                 <a href="{% url 'create tutorial' %}" class="btn btn-success">Create a Tutorial</a>
             </div>
         {% else %}

@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from tutorials.forms import TutorialCreateForm
@@ -64,29 +65,32 @@ def tutorial_page(request, pk):
 @login_required
 def tutorial_edit(request, pk):
     tutorial = Tutorial.objects.get(pk=pk)
-    if request.method == 'GET':
-        initial = {
-            'tutorial_name': tutorial.tutorial_name,
-            'description': tutorial.description,
-            'video_url': tutorial.video_url,
-            'links_to_documentation': tutorial.links_to_documentation,
-        }
-        context = {
-            'tutorial': tutorial,
-            'form': TutorialCreateForm(initial=initial)
-        }
-        return render(request, 'tutorials/tutorial_edit.html', context)
+    if request.user != tutorial.user:
+        return render(request, 'permission_denied.html')
     else:
-        form = TutorialCreateForm(request.POST, instance=tutorial)
-        if form.is_valid():
-            tutorial = form.save(commit=False)
-            tutorial.save()
-            return tutorial_page(request, pk)
-        context = {
-            'tutorial': tutorial,
-            'form': form,
-        }
-        return render(request, 'tutorials/tutorial_edit.html', context)
+        if request.method == 'GET':
+            initial = {
+                'tutorial_name': tutorial.tutorial_name,
+                'description': tutorial.description,
+                'video_url': tutorial.video_url,
+                'links_to_documentation': tutorial.links_to_documentation,
+            }
+            context = {
+                'tutorial': tutorial,
+                'form': TutorialCreateForm(initial=initial)
+            }
+            return render(request, 'tutorials/tutorial_edit.html', context)
+        else:
+            form = TutorialCreateForm(request.POST, instance=tutorial)
+            if form.is_valid():
+                tutorial = form.save(commit=False)
+                tutorial.save()
+                return tutorial_page(request, pk)
+            context = {
+                'tutorial': tutorial,
+                'form': form,
+            }
+            return render(request, 'tutorials/tutorial_edit.html', context)
 
 
 @login_required
