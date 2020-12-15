@@ -17,6 +17,10 @@ def register_user(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.email = form.cleaned_data['email']
+            user.save()
             profile = UserProfile(
                 user=user,
             )
