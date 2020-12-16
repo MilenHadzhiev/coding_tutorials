@@ -1,105 +1,102 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 
 from tutorials.forms import TutorialCreateForm
 from tutorials.models import Tutorial
 
 
-@login_required
-def tutorial_create(request):
-    if request.method == 'GET':
-        context = {
-            'form': TutorialCreateForm,
-        }
-        return render(request, 'tutorials/create_tutorial.html', context)
-    else:
-        form = TutorialCreateForm(request.POST)
-        if form.is_valid():
-            tutorial = form.save(commit=False)
-            tutorial.user = request.user
-            tutorial.save()
-            return redirect('current user tutorials')
-        context = {
-            'form': form,
-        }
-        return render(request, 'tutorials/create_tutorial.html', context)
+class TutorialCreate(LoginRequiredMixin, CreateView):
+    form_class = TutorialCreateForm
+    template_name = 'tutorials/create_tutorial.html'
+    success_url = reverse_lazy('current user tutorials')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()
+        return super().form_valid(form)
 
 
-def tutorials_all(request):
-    tutorials = Tutorial.objects.all()
-    tutorials_count = tutorials.count()
-    context = {
-        'tutorials': tutorials,
-        'tutorials_count': tutorials_count,
-        'is_user_tutorials_page': False,
-    }
-    return render(request, 'tutorials/tutorials_list.html', context)
+class TutorialsList(ListView):
+    template_name = 'tutorials/tutorials_list.html'
 
-@login_required
-def tutorials_user(request, pk=None):
-    user = request.user if pk is None else User.objects.get(pk=pk)
-    tutorials = user.tutorial_set.all()
-    tutorials_count = tutorials.count()
-    context = {
-        'user': user,
-        'tutorials': tutorials,
-        'tutorials_count': tutorials_count,
-        'has_create_link': pk is None,
-        'is_user_tutorials_page': True,
-    }
-    return render(request, 'tutorials/tutorials_list.html', context)
+    def get_queryset(self):
+        self.queryset = Tutorial.objects.all()
+        return self.queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tutorials'] = self.get_queryset()
+        context['is_user_tutorials_page'] = False
+        return context
 
 
-@login_required
-def tutorial_page(request, pk):
-    tutorial = Tutorial.objects.get(pk=pk)
-    context = {
-        'tutorial': tutorial,
-        'can_change': request.user == tutorial.user,
-    }
-    return render(request, 'tutorials/tutorial_page.html', context)
+class TutorialsUser(LoginRequiredMixin, ListView):
+    template_name = 'tutorials/tutorials_list.html'
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        user = self.request.user if pk is None else User.objects.get(pk=pk)
+        self.queryset = user.tutorial_set.all()
+        return self.queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs.get('pk')
+        user = self.request.user if pk is None else User.objects.get(pk=pk)
+        context['user'] = user
+        context['tutorials'] = self.get_queryset()
+        context['has_create_link'] = pk is None
+        context['is_user_tutorials_page'] = True
+        return context
 
 
-@login_required
-def tutorial_edit(request, pk):
-    tutorial = Tutorial.objects.get(pk=pk)
-    if request.user != tutorial.user:
-        return render(request, 'permission_denied.html')
-    else:
-        if request.method == 'GET':
-            initial = {
-                'tutorial_name': tutorial.tutorial_name,
-                'description': tutorial.description,
-                'video_url': tutorial.video_url,
-                'links_to_documentation': tutorial.links_to_documentation,
-            }
-            context = {
-                'tutorial': tutorial,
-                'form': TutorialCreateForm(initial=initial)
-            }
-            return render(request, 'tutorials/tutorial_edit.html', context)
-        else:
-            form = TutorialCreateForm(request.POST, instance=tutorial)
-            if form.is_valid():
-                tutorial = form.save(commit=False)
-                tutorial.save()
-                return tutorial_page(request, pk)
-            context = {
-                'tutorial': tutorial,
-                'form': form,
-            }
-            return render(request, 'tutorials/tutorial_edit.html', context)
+class TutorialPage(LoginRequiredMixin, DetailView):
+    template_name = 'tutorials/tutorial_page.html'
+    model = Tutorial
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs['pk']
+        context['tutorial'] = Tutorial.objects.get(pk=pk)
+        context['can_change'] = self.request.user == context['tutorial'].user
+        return context
 
 
-@login_required
-def tutorial_delete(request, pk):
-    tutorial = Tutorial.objects.get(pk=pk)
-    if request.method == 'GET':
-        context = {
-            'tutorial': tutorial,
-        }
-        return render(request, 'tutorials/tutorial_delete.html', context)
-    tutorial.delete()
-    return tutorials_user(request, pk=tutorial.user.id)
+class TutorialEdit(LoginRequiredMixin, UpdateView):
+    template_name = 'tutorials/tutorial_edit.html'
+    model = Tutorial
+    form_class = TutorialCreateForm
+
+    def dispatch(self, request, *args, **kwargs):
+        pk = self.kwargs['pk']
+        if request.user != Tutorial.objects.get(pk=pk).user:
+            return render(request, 'permission_denied.html')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        return reverse_lazy(
+            'view tutorial page',
+            kwargs={'pk': pk}
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs['pk']
+        context['tutorial'] = Tutorial.objects.get(pk=pk)
+        return context
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        return super().form_valid(form)
+
+
+class TutorialDelete(LoginRequiredMixin, DeleteView):
+    template_name = 'tutorials/tutorial_delete.html'
+    model = Tutorial
+    success_url = reverse_lazy('current user tutorials')

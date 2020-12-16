@@ -1,103 +1,76 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 
 from notes.forms import NoteCreateForm
 from notes.models import Note
 from tutorials.models import Tutorial
 
 
-@login_required
-def note_create_post_persist(request):
-    form = NoteCreateForm(request.POST)
-    if form.is_valid():
-        note = form.save(commit=False)
-        note.user = request.user
-        note.save()
-        return note_page(request, pk=note.id)
-    context = {
-        'form': form,
-    }
-    return render(request, 'notes/note_create.html', context)
+class NoteCreate(LoginRequiredMixin, CreateView):
+    template_name = 'notes/note_create.html'
+    form_class = NoteCreateForm
+
+    def get_initial(self):
+        pk = self.kwargs.get('pk')
+        if pk is not None:
+            tutorial = Tutorial.objects.get(pk=pk)
+            return {'title': tutorial.tutorial_name}
+        return super().get_initial()
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        pk = self.object.id
+        return reverse_lazy('current note', kwargs={'pk': pk})
 
 
-@login_required
-def note_create(request, pk=None):
-    if pk is None:
-        if request.method == 'GET':
-            context = {
-                'form': NoteCreateForm,
-            }
-            return render(request, 'notes/note_create.html', context)
-        else:
-            return note_create_post_persist(request)
-    else:
-        tutorial = Tutorial.objects.get(pk=pk)
-        initial = {
-            'title': tutorial.tutorial_name,
-        }
-        if request.method == 'GET':
-            context = {
-                'form': NoteCreateForm(initial=initial),
-            }
-            return render(request, 'notes/note_create.html', context)
-        else:
-            return note_create_post_persist(request)
+class NotesList(LoginRequiredMixin, ListView):
+    template_name = 'notes/notes_list.html'
+    context_object_name = 'notes'
+
+    def get_queryset(self):
+        self.queryset = self.request.user.note_set.all()
+        return self.queryset
 
 
-@login_required
-def all_user_notes(request):
-    user = request.user
-    notes = user.note_set.all()
-    notes_count = notes.count()
-    context = {
-        'user': user,
-        'notes': notes,
-        'notes_count': notes_count,
-    }
-    return render(request, 'notes/notes_list.html', context)
+class NotePage(LoginRequiredMixin, DetailView):
+    template_name = 'notes/note_page.html'
+    model = Note
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs.get('pk')
+        context['note'] = Note.objects.get(pk=pk)
+        return context
 
 
-@login_required
-def note_page(request, pk):
-    note = Note.objects.get(pk=pk)
-    context = {
-        'note': note,
-    }
-    return render(request, 'notes/note_page.html', context)
+class NoteEdit(LoginRequiredMixin, UpdateView):
+    template_name = 'notes/note_edit.html'
+    model = Note
+    form_class = NoteCreateForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs.get('pk')
+        context['note'] = Note.objects.get(pk=pk)
+        return context
+
+    def get_success_url(self):
+        pk = self.kwargs.get('pk')
+        return reverse_lazy('current note', kwargs={'pk': pk})
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        return super().form_valid(form)
 
 
-@login_required
-def note_edit(request, pk):
-    note = Note.objects.get(pk=pk)
-    if request.method == 'GET':
-        initial = {
-            'title': note.title,
-            'description': note.description,
-        }
-        context = {
-            'note': note,
-            'form': NoteCreateForm(initial=initial)
-        }
-        return render(request, 'notes/note_edit.html', context)
-    else:
-        form = NoteCreateForm(request.POST, instance=note)
-        if form.is_valid():
-            note = form.save(commit=False)
-            note.save()
-            return note_page(request, pk)
-        context = {
-            'form': form,
-        }
-        return render(request, 'notes/note_edit.html', context)
-
-
-@login_required
-def note_delete(request, pk):
-    note = Note.objects.get(pk=pk)
-    if request.method == 'GET':
-        context = {
-            'note': note,
-        }
-        return render(request, 'notes/note_delete.html', context)
-    note.delete()
-    return all_user_notes(request)
+class NoteDelete(LoginRequiredMixin, DeleteView):
+    template_name = 'notes/note_delete.html'
+    model = Note
+    success_url = reverse_lazy('my notes')
