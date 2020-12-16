@@ -1,12 +1,12 @@
 from django.urls import path, include
 
-from accounts.views import register_user, profile_user, profile_user_edit, logout_user
+from accounts.views import logout_user, RegisterUser, ProfileUser, ProfileUserEdit
 
 urlpatterns = [
-    path('register/', register_user, name='register user'),
-    path('profile/', profile_user, name='current user profile'),
-    path('profile/<int:pk>', profile_user, name='user profile'),
-    path('profile/edit/', profile_user_edit, name='edit profile'),
+    path('register/', RegisterUser.as_view(), name='register user'),
+    path('profile/', ProfileUser.as_view(), name='current user profile'),
+    path('profile/<int:pk>/', ProfileUser.as_view(), name='user profile'),
+    path('profile/edit/', ProfileUserEdit.as_view(), name='edit profile'),
     path('logout/', logout_user, name='logout user'),
     path('', include('django.contrib.auth.urls')),
 ]

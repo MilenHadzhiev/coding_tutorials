@@ -1,87 +1,89 @@
-from django.contrib.auth import logout, login
+from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DetailView, UpdateView
 
 from accounts.forms import RegisterForm, UserProfileEditForm
 from accounts.models import UserProfile
 
 
-def register_user(request):
-    if request.method == 'GET':
-        context = {
-            'form': RegisterForm,
-        }
-        return render(request, 'accounts/register.html', context)
-    else:
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            user.first_name = form.cleaned_data['first_name']
-            user.last_name = form.cleaned_data['last_name']
-            user.email = form.cleaned_data['email']
-            user.save()
-            profile = UserProfile(
-                user=user,
-            )
-            profile.save()
-            login(request, user)
-            return redirect('current user profile')
-        context = {
-            'form': form,
-        }
-        return render(request, 'accounts/register.html', context)
+class RegisterUser(CreateView):
+    template_name = 'accounts/register.html'
+    form_class = RegisterForm
+    success_url = reverse_lazy('current user profile')
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.first_name = form.cleaned_data['first_name']
+        self.object.last_name = form.cleaned_data['last_name']
+        self.object.email = form.cleaned_data['email']
+        self.object.save()
+        profile = UserProfile(
+            user=self.object,
+        )
+        profile.save()
+
+        valid = super().form_valid(form)
+        username, password = form.cleaned_data.get('username'), form.cleaned_data.get('password1')
+        user = authenticate(username=username, password=password)
+
+        login(self.request, user)
+        return valid
 
 
-@login_required
-def profile_user(request, pk=None):
-    user = request.user if pk is None else User.objects.get(pk=pk)
-    tutorials = user.tutorial_set.all()
-    notes = user.note_set.all()
-    context = {
-        'current_user': user,
-        'tutorials': tutorials,
-        'has_edit_link': pk is None,
-        'notes': notes,
-    }
-    return render(request, 'accounts/user_profile.html', context)
+class ProfileUser(LoginRequiredMixin, DetailView):
+    template_name = 'accounts/user_profile.html'
+    model = User
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs.get('pk')
+        user = self.request.user if pk is None else User.objects.get(pk=pk)
+        context['current_user'] = user
+        context['tutorials'] = user.tutorial_set.all()
+        context['notes'] = user.note_set.all()
+        context['has_edit_link'] = pk is None
+        return context
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(User, pk=self.request.user.pk)
 
 
-@login_required
-def profile_user_edit(request):
-    user = request.user
-    if request.method == 'GET':
-        initial = {
-            'first_name': user.first_name,
-            'last_name': user.last_name,
-            'email': user.email,
-            'profile_picture': user.userprofile.profile_picture,
-            'github': user.userprofile.github,
-            'address': user.userprofile.address,
-            'personal_website': user.userprofile.personal_website,
-            'about': user.userprofile.about,
-        }
-        context = {
-            'form': UserProfileEditForm(initial=initial),
-            'user': user,
-        }
-        return render(request, 'accounts/user_profile_edit.html', context)
-    else:
-        form = UserProfileEditForm(request.POST, request.FILES, instance=user)
-        if form.is_valid():
-            user = form.save()
-            user.userprofile.profile_picture = form.cleaned_data['profile_picture']
-            user.userprofile.github = form.cleaned_data['github']
-            user.userprofile.address = form.cleaned_data['address']
-            user.userprofile.personal_website = form.cleaned_data['personal_website']
-            user.userprofile.about = form.cleaned_data['about']
-            user.save()
-            user.userprofile.save()
-            return redirect('current user profile')
-        context = {
-            'form': form,
-        }
-        return render(request=request, template_name='accounts/user_profile_edit.html', context=context)
+class ProfileUserEdit(LoginRequiredMixin, UpdateView):
+    template_name = 'accounts/user_profile_edit.html'
+    form_class = UserProfileEditForm
+    success_url = reverse_lazy('current user profile')
+    model = User
+
+    def get_initial(self):
+        initial = super().get_initial()
+        user = self.request.user
+        initial['first_name'] = user.first_name
+        initial['last_name'] = user.last_name
+        initial['email'] = user.email
+        initial['profile_picture'] = user.userprofile.profile_picture
+        initial['github'] = user.userprofile.github
+        initial['address'] = user.userprofile.address
+        initial['personal_website'] = user.userprofile.personal_website
+        initial['about'] = user.userprofile.about
+        return initial
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.userprofile.profile_picture = form.cleaned_data['profile_picture']
+        self.object.userprofile.github = form.cleaned_data['github']
+        self.object.userprofile.address = form.cleaned_data['address']
+        self.object.userprofile.personal_website = form.cleaned_data['personal_website']
+        self.object.userprofile.about = form.cleaned_data['about']
+        self.object.save()
+        self.object.userprofile.save()
+        return super().form_valid(form)
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(User, pk=self.request.user.pk)
 
 
 @login_required

@@ -25,19 +25,19 @@
             </div>
             <div class="col-md-6 details">
                 <blockquote>
-                    <h5>{% if current_user.first_name %}
+                    <h1>{% if current_user.first_name %}
                         {{ current_user.first_name }} {{ current_user.last_name }}
                     {% else %}
                         {{ current_user.username }}
                     {% endif %}
-                        {% if current_user.userprofile.address %}
-                            </h5>
-                            <small><cite title="Source Title">{{ current_user.userprofile.address }}<i
-                                    class="icon-map-marker"></i></cite></small>
+                    </h1>
+                    {% if current_user.userprofile.address %}
+                        <p style="font-size: 18px"><cite title="Source Title">{{ current_user.userprofile.address }}<i
+                                class="icon-map-marker"></i></cite></p>
 
-                        {% endif %}
+                    {% endif %}
                 </blockquote>
-                <p>
+                <p style="font-size: 20px">
                     Email:
                     {% if current_user.email %}
                         {{ current_user.email }}
@@ -52,7 +52,7 @@
                     {% endif %} <br>
                 </p>
                 {% if current_user.userprofile.about %}
-                    <p>{{ current_user.userprofile.about }}</p>
+                    <p style="font-size: 18px;">{{ current_user.userprofile.about }}</p>
                 {% endif %}
                 {% if has_edit_link %}
                     <button type="button" class="btn btn-light"><a href="{% url 'edit profile' %}">Edit info</a>
