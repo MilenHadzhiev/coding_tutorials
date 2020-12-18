@@ -21,9 +21,10 @@
             <h5>Added By: <a href="{% url 'user profile' tutorial.user.id %}">{{ tutorial.user.username }}</a></h5>
             {% if tutorial.video_url %}
                 <button class="btn btn-block"><a href="{{ tutorial.video_url }}"
-                                                 class="video">See video explanation</a></button>
+                                                 class="video"
+                                                 style="font-size: 22px">See video explanation</a></button>
             {% endif %}
-            <p class="mt2" style="text-align: justify;">{{ tutorial.description }}</p>
+            <p class="mt2">{{ tutorial.description }}</p>
         </div>
         {% if can_change %}
             <div class="text-center">
