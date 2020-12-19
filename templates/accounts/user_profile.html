@@ -44,9 +44,17 @@
                     {% else %}
                         -
                     {% endif %} <br>
+                    Github:
+                    {% if current_user.userprofile.github %}
+                        <a href="{{ current_user.userprofile.github }}"
+                           style="text-decoration: none;color: #020304;">{{ current_user.userprofile.github }}</a>
+                    {% else %}
+                        -
+                    {% endif %} <br>
                     Personal website:
                     {% if current_user.userprofile.personal_website %}
-                        {{ current_user.userprofile.personal_website }}
+                        <a href="{{ current_user.userprofile.personal_website }}"
+                           style="text-decoration: none;color: #020304;">{{ current_user.userprofile.personal_website }}</a>
                     {% else %}
                         -
                     {% endif %} <br>
