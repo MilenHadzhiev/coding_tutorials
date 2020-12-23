@@ -2,7 +2,7 @@ from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView
 
@@ -14,6 +14,11 @@ class RegisterUser(CreateView):
     template_name = 'accounts/register.html'
     form_class = RegisterForm
     success_url = reverse_lazy('current user profile')
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return render(request, 'accounts/already_registered.html')
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         self.object = form.save()
@@ -89,4 +94,7 @@ class ProfileUserEdit(LoginRequiredMixin, UpdateView):
 @login_required
 def logout_user(request):
     logout(request)
+    next = request.GET.get('next')
+    if next:
+        return redirect(next)
     return redirect('homepage')

@@ -1,0 +1,11 @@
+{% extends 'common/base.html' %}
+{% block site_content %}
+    <div class="text-center">
+        <h1>You are already registered</h1>
+        <h2>Do you want to log out and register a new account?</h2>
+        <div class="m-2">
+            <a href="{% url 'logout user' %}?next=register user" class="btn btn-success">Yes</a>
+            <a href="javascript:history.back()" class="btn btn-primary">No, go back</a>
+        </div>
+    </div>
+{% endblock %}
