@@ -25,10 +25,8 @@
 
     <link rel="icon" type="image/png" href="{% static 'images/icon.png' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-    <style type="text/css">
-        {% block site_custom_styles %}
-        {% endblock site_custom_styles %}
-    </style>
+    {% block site_custom_styles %}
+    {% endblock site_custom_styles %}
 
 </head>
 <body>
