@@ -11,14 +11,24 @@
         {% endblock site_title %}
     </title>
 
+    <!--JQuery for dropdown items in nav -->
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <!-- Bootstrap files -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
           integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
+            type="text/javascript"></script>
+
     <link rel="icon" type="image/png" href="{% static 'images/icon.png' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-    {% block site_custom_styles %}
-    {% endblock site_custom_styles %}
+    <style type="text/css">
+        {% block site_custom_styles %}
+        {% endblock site_custom_styles %}
+    </style>
 
 </head>
 <body>

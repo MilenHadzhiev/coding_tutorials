@@ -1,0 +1,15 @@
+{% if user.is_authenticated %}
+    <li class="nav-item">
+        <a href="{% url 'current user profile' %}" class="nav-link">Hello, {{ user.username }}</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+    </li>
+{% else %}
+    <li class="nav-item">
+        <a href="{% url 'register user' %}" class="nav-link">Register</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'login' %}" class="nav-link">Login</a>
+    </li>
+{% endif %}

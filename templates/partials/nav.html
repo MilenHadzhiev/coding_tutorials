@@ -2,46 +2,22 @@
     <div class="collapse navbar-collapse">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a href="{% url 'homepage' %}" class="nav-link">Home</a>
+                <a href="{% url 'homepage' %}" class="nav-link active">Coding Tutorials</a>
             </li>
-            <li class="nav-item">
-                <a href="{% url 'all tutorials' %}" class="nav-link">All Tutorials</a>
-            </li>
+            <!-- Unauthenticated users have only GET permissions for the public part of the website -->
             {% if user.is_authenticated %}
+                {% include 'partials/tutorials_notes_auth.html' %}
+            {% else %}
                 <li class="nav-item">
-                    <a href="{% url 'current user tutorials' %}" class="nav-link">My Tutorials</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'create tutorial' %}" class="nav-link">Create a Tutorial</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'my notes' %}" class="nav-link">My Notes</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'create note' %}" class="nav-link">Create a Note</a>
+                    <a href="{% url 'all tutorials' %}" class="nav-link">Tutorials</a>
                 </li>
             {% endif %}
-
         </ul>
     </div>
     <div class="float-right">
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav">
-                {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a href="{% url 'current user profile' %}" class="nav-link">Hello, {{ user.username }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'logout' %}" class="nav-link">Logout</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a href="{% url 'register user' %}" class="nav-link">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'login' %}" class="nav-link">Login</a>
-                    </li>
-                {% endif %}
+                {% include 'partials/login_out.html' %}
             </ul>
         </div>
     </div>

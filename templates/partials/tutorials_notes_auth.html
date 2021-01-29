@@ -1,0 +1,27 @@
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Tutorials</a>
+    <ul class="dropdown-menu bg-dark">
+        <li>
+            <a href="{% url 'all tutorials' %}" class="dropdown-item text-secondary">All Tutorials</a>
+        </li>
+        <li>
+            <a href="{% url 'current user tutorials' %}" class="dropdown-item text-secondary">My
+                Tutorials</a>
+        </li>
+        <li>
+            <a href="{% url 'create tutorial' %}" class="dropdown-item text-secondary">Create a
+                Tutorial</a>
+        </li>
+    </ul>
+</li>
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Notes</a>
+    <ul class="dropdown-menu bg-dark">
+        <li>
+            <a href="{% url 'my notes' %}" class="dropdown-item text-secondary">My Notes</a>
+        </li>
+        <li>
+            <a href="{% url 'create note' %}" class="dropdown-item text-secondary">Create a Note</a>
+        </li>
+    </ul>
+</li>
