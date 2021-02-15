@@ -20,7 +20,9 @@
                 <a href="{% url 'create tutorial' %}" class="btn btn-success">Create a Tutorial</a>
             </div>
         {% else %}
-            There are no tutorials
+            <div class="mt-5 text-center">
+                <h1>There are no tutorials</h1>
+            </div>
         {% endif %}
     {% endif %}
 {% endblock %}
