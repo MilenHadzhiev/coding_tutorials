@@ -1,8 +1,8 @@
 {% if user.is_authenticated %}
-    <li class="nav-item">
+    <li class="nav-item" style="display: inline">
         <a href="{% url 'current user profile' %}" class="nav-link">Hello, {{ user.username }}</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" style="display: inline">
         <a href="{% url 'logout' %}" class="nav-link">Logout</a>
     </li>
 {% else %}
