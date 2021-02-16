@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>
         {% block site_title %}
@@ -31,8 +31,9 @@
 
 </head>
 <body>
-{% include 'partials/nav.html' %}
-
+<header style="position: absolute">
+    {% include 'partials/nav.html' %}
+</header>
 {% block site_content %}
 {% endblock site_content %}
 
