@@ -1,5 +1,5 @@
 body {
-    background: url('/static/images/cloud.jpg') no-repeat center fixed;
+    background: url('/static/images/cloud.jpg') no-repeat center;
     background-size: cover;
     font-family: "Monotype Corsiva", cursive;
     font-size: 24px;
