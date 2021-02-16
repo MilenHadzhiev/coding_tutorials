@@ -1,11 +1,11 @@
 body {
-    background: url('/static/images/cloud.jpg') no-repeat center;
+    background: url('/static/images/cloud.jpg') no-repeat center fixed;
     background-size: cover;
     font-family: "Monotype Corsiva", cursive;
     font-size: 24px;
 }
 
-@media all and (min-width: 992px) {
+@media all{
     .navbar .nav-item .dropdown-menu {
         display: none;
     }
