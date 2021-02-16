@@ -3,6 +3,7 @@ from os.path import join
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import cloudinary
 import django_heroku
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,6 +27,7 @@ INSTALLED_APPS = [
     'tutorials',
     'notes',
     'gunicorn',
+    'cloudinary',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -127,4 +129,9 @@ MEDIA_ROOT = join(BASE_DIR, 'media')
 
 DATE_INPUT_FORMATS = ['%d-%m-%Y']
 
+cloudinary.config(
+    cloud_name='hc3fixy4c',
+    api_key='868233963719996',
+    api_secret='d0iXDl_EC0i2bsy4ppvUeHX4Iq4',
+)
 django_heroku.settings(locals())
