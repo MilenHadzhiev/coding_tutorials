@@ -37,3 +37,13 @@ class UserProfileEditForm(forms.ModelForm):
     first_name = forms.CharField(required=False)
     last_name = forms.CharField(required=False)
     email = forms.EmailField(required=False)
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        try:
+            match = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return email
+
+        raise forms.ValidationError('This email is already taken')
+
