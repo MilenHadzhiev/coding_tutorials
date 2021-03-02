@@ -4,13 +4,16 @@
 {% endblock %}
 {% block site_custom_styles %}
     <style>
-        .video {
-            color: grey;
+        p a {
+            text-decoration: none;
+            color: #020304;
+            /*color: #292b2c;*/
         }
 
-        .video:hover {
+        p a:hover {
             text-decoration: none;
-            color: dimgrey;
+            /*color: #292b2c;*/
+            color: #8c9396;
         }
     </style>
 {% endblock %}
@@ -24,7 +27,7 @@
                                                  class="video"
                                                  style="font-size: 22px">See video explanation</a></button>
             {% endif %}
-            <p class="mt2">{{ tutorial.description }}</p>
+            <p class="mt2">{{ tutorial.description|linebreaksbr|urlize }}</p>
         </div>
         {% if can_change %}
             <div class="text-center">
