@@ -1,5 +1,8 @@
 # coding_tutorials
 ### Python Web Framework exam project
+
+Self-teaching platform
+
 #### Includes
 
 ##### Mandatory requirements:
