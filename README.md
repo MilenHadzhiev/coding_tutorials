@@ -1,7 +1,10 @@
 # coding_tutorials
 ### Python Web Framework exam project
 
-Self-teaching platform
+Self-teaching platform <br>
+example login credentials: <br>
+username: BUv49Kskgg6sr94 <br>
+password: BUv49Kskgg6sr94
 
 #### Includes
 
