@@ -1,9 +1,11 @@
 # coding_tutorials
 ### Python Web Framework exam project
 
+#### [https://coding-tutorials.herokuapp.com](https://coding-tutorials.herokuapp.com)
+
 Self-teaching platform <br>
 example login credentials: <br>
-username: BUv49Kskgg6sr94 <br>
+username: Test <br>
 password: BUv49Kskgg6sr94
 
 #### Includes
