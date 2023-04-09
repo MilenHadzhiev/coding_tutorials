@@ -23,12 +23,8 @@ class RegisterForm(UserCreationForm):
 class UserProfileEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['profile_picture'].required = False
-        self.fields['github'].required = False
-        self.fields['address'].required = False
-        # self.fields['date_of_birth'].required = False
-        self.fields['personal_website'].required = False
-        self.fields['about'].required = False
+        for field in self.fields:
+            self.fields[field].required = False
 
     class Meta:
         model = UserProfile

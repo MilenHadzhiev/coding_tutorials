@@ -17,7 +17,7 @@ SECRET_KEY = '(yo@!rx!hj!am^)9-zddh-io*bvzolluo3oob1%qa_k*bbx9@$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(' ')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost').split(' ')
 
 # Application definition
 
@@ -73,11 +73,11 @@ WSGI_APPLICATION = 'coding_tutorials.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME'),  # 'tutorials_db',
-        'USER': os.environ.get('DB_USER'),  # 'postgres',
-        'PASSWORD': os.environ.get('DB_PASSWORD'),  # 'postgres',
-        'HOST': os.environ.get('DB_HOST'),  # 'localhost',
-        'PORT': os.environ.get('DB_PORT'),  # '5432',
+        'NAME': os.environ.get('DB_NAME', 'tutorials_db'),  # 'tutorials_db',
+        'USER': os.environ.get('DB_USER', 'postgres'),  # 'postgres',
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'postgres'),  # 'postgres',
+        'HOST': os.environ.get('DB_HOST', 'localhost'),  # 'localhost',
+        'PORT': os.environ.get('DB_PORT', '5432'),  # '5432',
     }
 }
 

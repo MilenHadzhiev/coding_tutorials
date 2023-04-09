@@ -1,7 +1,7 @@
 # coding_tutorials
 ### Python Web Framework exam project
 
-#### [https://coding-tutorials.herokuapp.com](https://coding-tutorials.herokuapp.com)
+#### [https://coding-tutorials.herokuapp.com](https://coding-tutorials.herokuapp.com) // inactive
 
 Self-teaching platform <br>
 example login credentials: <br>
